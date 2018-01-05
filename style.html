@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>banner2</title>
+		<script src="js/jquery-1.11.0.js"></script>
+		<style>
+		*{padding:0px;
+		margin:0px;}
+		ul,li{list-style:none;}
+		.banner{width:720px;height:344px;margin:50px auto;border:1px solid #000;
+		position:relative;overflow:hidden;cursor:pointer;}
+		.img{
+			position:absolute;
+			left:0px;top:0px;width:1440px;height:100%;
+		}
+		.img img{position:absolute;left:720px;top:0px;}
+		.img .first{position:absolute;left:0px;top:0px;}
+		.btnLeft{
+			width:50px;height:50px;position:absolute;top:50%;z-index:999;display:none;
+			margin-top:-25px;left:0px;text-align:center;line-height:50px;cursor:pointer;
+		}
+		.btnRight{
+			width:50px;height:50px;position:absolute;top:50%;z-index:999;display:none;
+			margin-top:-25px;right:0px;text-align:center;line-height:50px;cursor:pointer;
+		}
+		.tab{position:absolute;right:50px;bottom:20px;}
+		.tab li{width:20px;height:20px;float:left;border:1px solid red;margin:0 5px;cursor:pointer;}
+		.active{background:orangered;}
+		</style>
+	</head>
+	<body>
+	<div class="banner">
+	   <div class="img">
+	   	<img src="img/ban1.jpg" class="first">
+	   		<img src="img/ban2.jpg">
+	   			<img src="img/ban3.jpg">
+	   				<img src="img/ban4.jpg">
+	   					<img src="img/ban5.jpg">
+	   						<img src="img/ban6.jpg">
+	   							<img src="img/ban7.jpg">
+	   								<img src="img/ban8.jpg">
+	   </div>
+	   <div class="btnLeft">
+	   <img src="img/left.png">
+	   </div>
+	   <div class="btnRight">
+	   	<img src="img/right.png">
+	   </div>
+	   <ul class="tab">
+	   	 <li class="active"></li>
+	   	 <li></li>
+	   	 <li></li>
+	   	 <li></li>
+	   	 <li></li>
+	   	 <li></li>
+	   	 <li></li>
+	   	 <li></li>
+	   </ul>
+	</div>
+	<script>
+	//入口
+		$(function(){
+			//设定定时器变量
+			var timer=null;
+			//当前的索引
+			var $currentIndex=0;
+			//即将要执行的索引
+			var $index=0;
+			
+			//自动轮播
+			function autoPlay(){
+				timer=setInterval(function(){
+					$index++;
+					if($index>7){
+						$index=0;
+					}
+					scrollPlay();
+					$currentIndex=$index;
+				},1500);
+			}
+			//轮播函数
+			function scrollPlay(){
+				//给即将要执行的li添加类
+				$(".tab li").eq($index).addClass("active").siblings().removeClass("active");
+				//如果即将要执行的索引大于当前的索引
+				if($index>$currentIndex){
+					$(".img img").eq($currentIndex).stop(true,true).animate({"left":"-720px"});
+					$(".img img").eq($index).css("left","720px").stop(true,true).animate({"left":"0px"});
+				}
+				//如果即将要执行的索引小于当前的索引
+				else if($index<$currentIndex){
+					$(".img img").eq($currentIndex).stop(true,true).animate({"left":"720px"});
+					$(".img img").eq($index).css("left","-720px").stop(true,true).animate({"left":"0px"});
+				}
+			}
+			//点击左右按钮
+			function btnClick(){
+				//点击左按钮
+				$(".btnLeft").click(function(){
+					$index--;
+					if($index<0){
+						$index=7;
+					}
+					scrollPlay();
+					$currentIndex=$index;
+				});
+				//点击右按钮
+				$(".btnRight").click(function(){
+					$index++;
+					if($index>7){
+						$index=0;
+					}
+					scrollPlay();
+					$currentIndex=$index;
+				})
+			}
+			
+			//点击tab li进行切换
+			function clickLi(){
+				$(".tab li").click(function(){
+					$index=$(this).index();
+					scrollPlay();
+					$currentIndex=$index;
+				});
+			}
+			
+			//鼠标悬停清除定时器
+			function clear(){
+				$(".banner").hover(function(){
+					$(".btnLeft").css("display","block");
+					$(".btnRight").css("display","block");
+					clearInterval(timer);
+					timer=null;
+				},function(){
+					$(".btnLeft").css("display","none");
+					$(".btnRight").css("display","none");
+					autoPlay();
+				});
+			}
+			
+			//初始化
+			function init(){
+				autoPlay();//自动执行轮播
+				btnClick(); //左右按钮调用
+				clickLi();  //tab li调用
+				clear();
+			}
+			
+			init();
+		})
+	</script>
+	</body>
+</html>

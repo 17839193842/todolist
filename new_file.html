@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="limit.js"></script>
+	</head>
+	<body>	
+<input id="txtNote" onblur="enters()"/> 
+还可输入<input type="text" id="txtCount" />个字符 
+<script type="text/javascript">
+//var lim=new limit(); 
+//lim.txtNote=document.getElementById("txtNote"); 
+//lim.txtLimit=document.getElementById("txtCount"); 
+//lim.limitCount=20; 
+//lim.isbyte=true; 
+//lim.init(); 
+function enters(){
+	var str=document.getElementById("txtNote").value;
+    var val0=str.limitInput(10,str);
+}
+var strs='中1中中aaa';
+console.log(strs.length);
+</script> 
+	</body>
+</html>

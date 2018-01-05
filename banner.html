@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>banner</title>
+		<link href="css/banner.css" rel="stylesheet">
+	</head>
+	<body>
+		<div id="banner" class="banner">
+			<ul class="banner-img">
+				<li><img src="img/ban8.jpg" alt="ban8" /></li>
+				<li><img src="img/ban1.jpg" alt="ban1" /></li>
+				<li><img src="img/ban2.jpg" alt="ban2" /></li>
+				<li><img src="img/ban3.jpg" alt="ban3" /></li>
+				<li><img src="img/ban4.jpg" alt="ban4" /></li>
+				<li><img src="img/ban5.jpg" alt="ban5" /></li>
+				<li><img src="img/ban6.jpg" alt="ban6" /></li>
+				<li><img src="img/ban7.jpg" alt="ban7" /></li>
+				<li><img src="img/ban8.jpg" alt="ban8" /></li>
+				<li><img src="img/ban1.jpg" alt="ban1" /></li>
+			</ul>
+			<div class="banner-btn">
+				<a href="" class="btn-left"><</a>
+				<a href="" class="btn-right">></a>
+			</div>
+			<ul class="banner-tab">
+				<li class="on"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<script>
+			window.onload=function(){
+				//获取banner
+				var banner=document.querySelector("#banner");
+				//获取所有的图片
+				var oImgs=document.getElementsByClassName("banner-img")[0].getElementsByTagName("li");
+				//获取装图片的容器
+				var oUl=document.querySelector("#banner .banner-img");
+				console.log(typeof oUl);
+				//获取tab切换的所有li
+				var oLis=document.querySelectorAll(".banner-tab li");
+				//获取左右切换按钮
+				var btnLeft=document.getElementsByClassName("btn-left")[0];
+				var btnRight=document.querySelector(".banner-btn>.btn-right");
+				console.log(typeof btnLeft);
+				//图片的宽度
+				var width=720;
+				//声明一个定时器变量
+				var timer=null;
+				//声明一个索引index
+			 	var index=1;
+			 	//给容器添加过渡动画效果
+				oUl.style.transition="all 0.3s";
+				//自动轮播函数实现
+				function auto()
+				{
+					timer=setInterval(function(){
+					for(var i=0;i<oLis.length;i++){
+						oLis[i].className=" ";
+					}
+					index++;
+					if(index>=9){
+						index=1;
+						oUl.style.transition=" ";
+					}
+					oLis[index-1].className="on";
+					oUl.style.transition="all 0.3s";
+					oUl.style.transform='translateX('+index*width*-1+'px)';
+					
+				},1500);
+				}
+				
+				//鼠标经过banner清除自动轮播
+				function clearBanner(){
+					banner.onmouseover=function(){
+						clearInterval(timer);
+					}
+					banner.onmouseout=function(){
+						auto();
+					}
+				}
+				//点击tab进行切换
+				function clickTab(){
+					for(var i=0;i<oLis.length;i++){
+						oLis[i].indexs=i;
+						oLis[i].onclick=function(){
+							for(var j=0;j<oLis.length;j++){
+								//给li标签的class='on'去掉
+								oLis[j].className=' ';
+							}
+							oUl.style.transform='translateX('+(this.indexs+1)*width*-1+'px)';
+							oLis[this.indexs].className="on";
+						}
+					}
+				}
+				
+				//点击左右按钮进行图片切换
+				function btnClick(){
+					btnLeft.onclick=function(){
+						index++;
+                        console.log(index);
+						if(index>=9){
+							index=1;
+							oUl.style.transition=" ";
+						}
+						for(var i=0;i<oLis.length;i++){
+						    oLis[i].className=" ";
+					     }
+						oLis[index-1].className="on";
+						oUl.style.transition="all 0.3s";
+						oUl.style.transform='translateX('+index*width*-1+'px)';
+					}
+					btnRight.onclick=function(){
+						index--;
+						if(index<=0){
+							index=8;
+							oUl.style.transition=" ";
+						}
+						for(var i=0;i<oLis.length;i++){
+						    oLis[i].className="";
+					     }
+						oLis[index-1].className="on";
+						oUl.style.transition="all 0.3s";
+						oUl.style.transform='translateX('+index*width+'px)';
+					}
+				}
+					
+				
+				//初始化函数
+				function init(){
+					auto();
+					clearBanner();
+					clickTab();
+				    btnClick();
+				}
+				init();
+		}
+		</script>
+	</body>
+</html>

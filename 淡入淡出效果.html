@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>淡入淡出</title>
+		<script src="js/jquery-1.11.0.js"></script>
+		<style>
+		*{padding:0px;margin:0px;}
+		ul,li{list-style:none;}
+		.banner{width:720px;height:344px;margin:50px auto;border:1px solid #000;
+		     position:relative;cursor: pointer;}
+		.img{width:720px;height:344px;position:absolute;left:0;top:0;}
+		.img ul li{float:left;position:absolute;left:0;top:0;display:none;}
+		.img ul li.active{display:block;}
+		.btnLeft{
+			width:50px;height:50px;position:absolute;top:50%;margin-top:-25px;line-height:50px;
+			text-align:center;cursor:pointer;left:0px;display:none;transition:all 0.5s;
+		}
+		.btnRight{
+			width:50px;height:50px;position:absolute;top:50%;margin-top:-25px;line-height:50px;
+			text-align:center;cursor:pointer;right:0px;display:none;transition:all 0.5s;
+		}
+		.tab{
+			position:absolute;right:50px;bottom:20px;
+		}
+		.tab ul li{width:20px;height:20px;border:1px solid red;float:left;margin:0 5px;cursor: pointer;
+		  }
+		 .tab ul li.on{
+		 	background:orange;
+		 }
+		</style>
+	</head>
+	<body>
+	<div class="banner">
+	   <div class="img">
+	     <ul>
+	     <li class="active"><img src="img/ban1.jpg" alt="" /></li>
+	     <li><img src="img/ban2.jpg" alt="" /></li>
+	     <li><img src="img/ban3.jpg" alt="" /></li>
+	     <li><img src="img/ban4.jpg" alt="" /></li>
+	     <li><img src="img/ban5.jpg" alt="" /></li>
+	     <li><img src="img/ban6.jpg" alt="" /></li>
+	     <li><img src="img/ban7.jpg" alt="" /></li>
+	     <li><img src="img/ban8.jpg" alt="" /></li>
+	     </ul>
+	   </div>
+	   <div class="tab">
+	   	<ul>
+	   		<li class="on"></li>
+	   		<li></li>
+	   		<li></li>
+	   		<li></li>
+	   		<li></li>
+	   		<li></li>
+	   		<li></li>
+	   		<li></li>
+	   	</ul>
+	   </div>
+	   <div class="btnLeft">
+	   	<img src="img/left.png" alt="" />
+	   </div>
+	   <div class="btnRight">
+	   	<img src="img/right.png" alt="" />
+	   </div>
+	</div>
+	<script>
+		$(function(){
+	         var timer=null;
+	         var index=0;
+	         //自动播放函数
+			function autoPlay(){
+				timer=setInterval(function(){
+					index++;
+					 if(index>7){
+			  	       index=0;
+			          }
+					auto();
+				},1500);
+			}
+			//自动播放实现
+			function auto(){
+				$(".tab ul li").eq(index).addClass("on").siblings().removeClass("on"); 
+			    $(".img ul li").eq(index).fadeIn().siblings().fadeOut();
+			}
+			//左右按钮函数
+			function btnClick(){
+				$(".btnLeft").click(function(){
+					index--;
+					if(index<0){
+						index=7;
+					}
+					auto();
+				});
+				$(".btnRight").click(function(){
+					index++;
+					if(index>7){
+						index=0;
+					}
+					auto();
+				});
+			}
+			//tab li点击函数
+			function clickLi(){
+				$(".tab ul li").click(function(){
+					index=$(this).index();
+					auto();
+				})
+			}
+			
+			//鼠标悬停清除定时器
+			function clear(){
+				$(".banner").hover(function(){
+					$(".btnLeft").css("display","block");
+					$(".btnRight").css("display","block");
+					clearInterval(timer);
+					timer=null;
+				},function(){
+					$(".btnLeft").css("display","none");
+					$(".btnRight").css("display","none");
+					autoPlay();
+				});
+			}
+			
+			//初始化
+			function init(){
+				autoPlay();
+				btnClick();
+				clickLi();
+				clear();
+			}
+			
+			init();
+		});
+	</script>
+	</body>
+</html>

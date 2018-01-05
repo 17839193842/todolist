@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>图片延迟加载</title>
+		<style>
+		*{padding:0;margin:0;}
+		body{font-size:14px;font-family:"微软雅黑";}
+		ul,li{list-style:none;}
+		.fl{
+			float:left!important;		}
+			.fr{float:right!important;}
+			.container{
+				width:1180px;
+				height:600px;margin:100px auto;
+			}
+			.c_top{
+				height:50px;line-height:50px;
+				border-bottom:1px solid #ccc;
+				margin-bottom:0px;
+			}
+			.c_cont li{
+			width:220px;
+			height:300px;
+			background:#333;
+			float:left;
+			margin-right:15px;	
+			}
+			.c_cont li img{
+				width:220px;
+				height:240px;
+			}
+			.c_cont li h3{
+				text-align:center;
+			}
+			span.fl{
+				margin-left:10px;
+			}
+			span.fr{
+				margin-right:10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="c_top">猜你喜欢</div>
+			<div class="c_cont">
+				<ul>
+					<li>
+						<a href=""><img _src="img/ban1.jpg" src="img/ban6.jpg"></a>
+						<h3>web前端学习</h3>
+						<p>
+							<span class="fl">免费</span>
+							<span class="fr">海棠</span>
+						</p>
+					</li>
+					<li>
+						<a href=""><img _src="img/ban2.jpg" src="img/ban6.jpg"></a>
+						<h3>web前端学习</h3>
+						<p>
+							<span class="fl">免费</span>
+							<span class="fr">海棠</span>
+						</p>
+					</li>
+					<li>
+						<a href=""><img _src="img/ban3.jpg" src="img/ban6.jpg"></a>
+						<h3>web前端学习</h3>
+						<p>
+							<span class="fl">免费</span>
+							<span class="fr">海棠</span>
+						</p>
+					</li>
+					<li>
+						<a href=""><img _src="img/ban4.jpg" src="img/ban6.jpg"></a>
+						<h3>web前端学习</h3>
+						<p>
+							<span class="fl">免费</span>
+							<span class="fr">海棠</span>
+						</p>
+					</li>
+					<li>
+						<a href=""><img _src="img/ban5.jpg" src="img/ban6.jpg"></a>
+						<h3>web前端学习</h3>
+						<p>
+							<span class="fl">免费</span>
+							<span class="fr">海棠</span>
+						</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!--<script src="js/jquery-1.11.0.js"></script>-->
+		<script type="text/javascript">
+			window.onload=function(){
+				//找到页面中的所有图片
+			var imgDoms=document.images;
+			//拿到可视区域
+			var cheight=window.innerHeight||document.documentElement.clientHeight;
+			//拿到滚动条高度
+			var ctop=document.body.scrollTop||document.documentElement.scrollTop;
+			
+			window.onscroll=function(){
+				for(var i=0;i<imgDoms.length;i++){
+					var _src=imgDoms[i].getAttribute("_src");
+					imgDoms[i].src=_src;
+				}
+			}
+			}
+		</script>
+	</body>
+</html>

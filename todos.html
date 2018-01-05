@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>todolists</title>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.1.min.js"></script>
+	</head>
+	<style>
+		*{padding:0px;margin:0px;}
+		body{
+			background:#CCCCCC;
+		}
+		ul,li{list-style:none;font-size:14px;}
+		.clearfix:after{display:block;clear:both;}
+		.header{width:100%;height:60px;background:#333333;line-height:60px;}
+		.header span.add{font-weight: normal;background:#CCCCCC;width:40px;cursor:pointer;
+		height:30px;text-align: center;line-height:30px;color:#555!important;border-radius:50%;font-size:14px!important;position:absolute;right:45px;top:18px;}
+		.center{width:600px;margin:0 auto;position:relative;}
+		.header .center>span{display:inline-block;font-size:20px;color:#fff;font-weight:bold;}
+		.header .center>span input{width:320px;background:#fff;color:#777;height:30px;margin-left:50px;text-indent:10px;border-radius:5px;outline:none;}
+	  h2{font-size:20px;color:#000;line-height:50px;position:relative;}
+	  ul li span{display:inline-block;}
+	  ul li{margin:10px auto;position:relative;height:35px;background:#fff;border-radius:3px;line-height:35px;}
+	  ul li input[type="checkbox"]{cursor:pointer;position:relative;top:5px;width:20px;height:20px;margin-left:15px;margin-right:0px;}
+	  ul li input[type="text"]{width:400px;height:23px;top:0px;position:relative;border:none;}
+	  ul li button{width:20px;height:20px;position:absolute;right:10px;top:7px;cursor:pointer;}
+	  .done ul li{background:#ddd;}
+	  .done ul li input[type="text"]{background:#ddd;outline:none;border:none;}
+	  .doing ul li{border-left:5px solid #1E90FF;}
+	  .done ul li{border-left:5px solid #777;}
+	  h2 span{display:inline-block;position:absolute;top:15px;line-height:25px;padding:0 10px;background:cadetblue;color:#000;border-radius:50%;right:10px;font-size:14px;font-weight: normal;}
+	</style>
+	<body>
+		<div id="todolist">
+		<!--header-->
+		<div class="header">
+			<div class="center">
+				<span>ToDoList</span>
+				<span><input type="text" placeholder="添加ToDo" v-model="addList" v-on:keyup.enter="add"/></span>
+				<span class="add">添加</span>
+			</div>
+		</div>
+			<div class="center">
+				<h2>正在进行 <span></span> </h2>
+				<div class="doing">
+					<ul>
+						<li v-for="(item,index) in items" class="clearfix" v-if="!item.completed">
+							<input type="checkbox" @click="check(item)" onclick="return false;"/>
+							<span @click="toggle(item)" v-if="item.label"/>{{item.title}}</span>
+							<input type="text" v-if="!item.label" v-on:blur="editTit(item)" v-on:keyup.enter="editTit(item)" v-model="item.title"/>
+							<button @click="del(item)">X</button>
+						</li>
+					</ul>
+				</div>
+				
+			    <h2>已经完成 <span></span></h2> 
+			    <div class="done">
+			    	<ul>
+						<li class="clearfix" v-for="(item,index) in items" v-if="item.completed">
+							<input type="checkbox" checked  @click="check(item)"/>
+							<span @click="toggle(item)" v-if="item.label"/>{{item.title}}</span>
+							<input type="text" v-if="!item.label" v-on:blur="editTit(item)" v-on:keyup.enter="editTit(item)" v-model="item.title"/>
+							<button @click="del(item)">X</button>
+						</li>
+					</ul>
+			    </div>
+			</div>
+		</div>
+	</div>
+		<script>
+		//localStroage保存数据
+        var STORAGE_KEY='todos';
+        var todoStorage={
+        	fetch: function() {  //从数据库中获取数据
+        		var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+        		return todos;
+        	},
+        	save: function(todos) {
+        		localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+        	}
+        }
+        
+			var vm=new Vue({
+			  el: '#todolist',
+			  data: {
+			  	items: todoStorage.fetch(),
+			  	addList: '',
+			  	editTitle: ''
+			  },
+			  mounted:function(){
+			  },
+			  methods:{
+			  	add(){
+			  		this.items.push({"label":true,"title":this.addList,"completed":false});
+			  	},
+			  	toggle(item){
+			  		this.items[this.items.indexOf(item)].label=!this.items[this.items.indexOf(item)].label;
+			  	},
+			  	editTit(item){
+			  		this.items[this.items.indexOf(item)].label=!this.items[this.items.indexOf(item)].label;
+			  	},
+			  	del(item){
+			  		this.items.splice(this.items.indexOf(item),1);
+			  	},
+			  	check(item){
+			  		this.items[this.items.indexOf(item)].completed=!this.items[this.items.indexOf(item)].completed;
+			  	}
+			  },
+			
+			  watch:{
+			     items: {
+			     	handler: function(items){
+			     		todoStorage.save(items);
+			     	},
+			     	deep: true
+			     }
+			  }
+			})
+		</script>
+	</body>
+</html>
